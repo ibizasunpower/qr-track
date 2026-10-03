@@ -1,6 +1,8 @@
 FROM php:8.4-apache
 
-# Install system dependencies
+# ------------------------------------------------------------
+# System dependencies
+# ------------------------------------------------------------
 RUN apt-get update && apt-get install -y \
     libsqlite3-dev \
     libpng-dev \
@@ -12,7 +14,9 @@ RUN apt-get update && apt-get install -y \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Configure and install PHP extensions
+# ------------------------------------------------------------
+# PHP extensions
+# ------------------------------------------------------------
 RUN docker-php-ext-configure gd \
     --with-freetype \
     --with-jpeg \
@@ -22,28 +26,52 @@ RUN docker-php-ext-configure gd \
     curl \
     mbstring
 
-# Apache modules required by QR Track
+# ------------------------------------------------------------
+# Apache configuration
+# ------------------------------------------------------------
+
+# Enable modules used by QR Track
 RUN a2enmod rewrite headers
 
+# Allow QR Track's .htaccess to use rewrite rules
+RUN printf '%s\n' \
+    '<Directory /var/www/html>' \
+    '    Options FollowSymLinks' \
+    '    AllowOverride All' \
+    '    Require all granted' \
+    '</Directory>' \
+    > /etc/apache2/conf-available/qr-track.conf \
+    && a2enconf qr-track
+
+# ------------------------------------------------------------
 # Composer
+# ------------------------------------------------------------
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+# ------------------------------------------------------------
+# Application
+# ------------------------------------------------------------
 WORKDIR /var/www/html
 
-# Copy application
 COPY . /var/www/html/
 
-# Install dependencies
+# Install application dependencies
 RUN composer install \
     --no-dev \
     --optimize-autoloader \
     --no-interaction
 
-# Create persistent-data locations
+# ------------------------------------------------------------
+# Persistent storage
+# ------------------------------------------------------------
 RUN mkdir -p /data/db /data/tmp \
     && chown -R www-data:www-data /data \
+    && chmod -R 775 /data \
     && chown -R www-data:www-data /var/www/html
 
+# ------------------------------------------------------------
+# Apache
+# ------------------------------------------------------------
 EXPOSE 80
 
 CMD ["apache2-foreground"]
