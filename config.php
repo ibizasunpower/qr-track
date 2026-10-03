@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 // --- AUTHENTICATION SETTINGS ---
 define('ADMIN_USER', getenv('ADMIN_USER') ?: 'admin');
-define('ADMIN_PASS', getenv('ADMIN_PASS') ?: 'mast3runl0ck3r12!@');
+define('ADMIN_PASS', getenv('ADMIN_PASS') ?: '');
 
 // --- API SETTINGS ---
 define('API_KEY', getenv('API_KEY') ?: '');
+
 // --- SITE SETTINGS ---
 define('BASE_URL', rtrim(getenv('BASE_URL') ?: 'http://localhost', '/'));
 
-// Persistent Docker/Coolify storage
 define('DB_PATH', getenv('DB_PATH') ?: '/data/db/tuxxin_qr.sqlite');
 define('LOGO_DIR', getenv('LOGO_DIR') ?: '/data/tmp');
 
@@ -57,12 +57,6 @@ define(
     (int) (getenv('SESSION_LIFETIME') ?: 7200)
 );
 
-// =============================================================================
-// END OF CONFIGURATION — do not edit below this line
-// =============================================================================
-// =============================================================================
-// END OF CONFIGURATION — do not edit below this line
-// =============================================================================
 // =============================================================================
 // END OF CONFIGURATION — do not edit below this line
 // =============================================================================
