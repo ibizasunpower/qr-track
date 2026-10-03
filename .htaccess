@@ -1,8 +1,11 @@
 RewriteEngine On
 
-# 1. If the file exists physically (images, css, js), serve it directly
+# Route /p/{uuid} to proxy.php for QR code redirects
+RewriteRule ^p/([a-zA-Z0-9]+)$ proxy.php?id=$1 [L,QSA]
+
+# If the file exists physically (images, css, js), serve it directly
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-# 2. Otherwise, send all requests to index.php for framework routing
+# Otherwise, send requests to index.php
 RewriteRule ^(.*)$ index.php [QSA,L]
