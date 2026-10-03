@@ -1,7 +1,11 @@
 .git
 .github
 .gitignore
-Dockerfile
 README.md
+
 *.sqlite
+*.sqlite3
 *.db
+
+.env
+.env.*
