@@ -6,8 +6,7 @@ define('ADMIN_USER', getenv('ADMIN_USER') ?: 'admin');
 define('ADMIN_PASS', getenv('ADMIN_PASS') ?: 'mast3runl0ck3r12!@');
 
 // --- API SETTINGS ---
-define('API_KEY', getenv('API_KEY') ?: '7d91f8a36c2e4b09f057e1d82a6c94fbc0137a55e8d4921f6b2c38a47de910cb');
-
+define('API_KEY', getenv('API_KEY') ?: '');
 // --- SITE SETTINGS ---
 define('BASE_URL', rtrim(getenv('BASE_URL') ?: 'http://localhost', '/'));
 
